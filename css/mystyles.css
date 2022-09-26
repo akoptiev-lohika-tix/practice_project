@@ -7878,3 +7878,12 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 
 .main {
   padding: 12px 24px; }
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  padding: 8px 16px; }
+
+.image {
+  display: block; }

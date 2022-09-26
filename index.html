@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>My custom Bulma website</title>
-    <link rel="stylesheet" href="css/mystyles.css">
+    <link rel="stylesheet" href="css/mystyles.css" />
   </head>
   <body>
-     <div class="main">
-        
-     </div>
-     <script src="./index.js" type="module"></script>
+    <div class="main">
+      <div class="search-statistics">
+        <p class="last-search"></p>
+      </div>
+      <div class="content"></div>
+    </div>
+    <script src="./storage.js" type="module"></script>
+    <script src="./node_modules/lodash/lodash.min.js"></script>
+    <script src="./index.js" type="module"></script>
   </body>
 </html>
