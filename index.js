@@ -6,13 +6,10 @@ const main = document.querySelector('.main');
 const content = document.querySelector('.content');
 const lastSearch = document.querySelector('.last-search');
 
-drawLastResult(load('lastSearch'));
-
-const inputPlaceholder = 'Search...';
-
-const inputMarkup = `<input class="input is-primary" type="text" placeholder="${inputPlaceholder}">`;
-
-main.insertAdjacentHTML('afterbegin', inputMarkup);
+const loadFromStorage = load('lastSearch');
+if (loadFromStorage) {
+  drawLastResult(loadFromStorage);
+}
 
 const input = document.querySelector('.input');
 
@@ -61,4 +58,41 @@ function removeContent(el) {
 
 function drawLastResult(value) {
   lastSearch.textContent = `Result of last search: ${value} of ${pictures.length}`;
+}
+
+// const minutes = document.querySelector('.minutes');
+// const seconds = document.querySelector('.seconds');
+// let sec = 50;
+// let mins = 0;
+
+// setInterval(() => {
+//   sec += 1;
+
+//   if (sec === 60) {
+//     sec = 0;
+//     mins += 1;
+//   }
+
+//   seconds.textContent = String(sec).padStart(2, '0');
+//   minutes.textContent = String(mins).padStart(2, '0');
+// }, 1000);
+
+const timer = document.querySelector('.timer');
+
+let timeCount = 0;
+
+setInterval(() => {
+  const minutes = convetTime(Math.floor(timeCount / 60));
+  const seconds = convetTime(timeCount % 60);
+
+  timer.textContent = `${minutes} : ${seconds}`;
+  timeCount++;
+}, 1000);
+
+function convetTime(time) {
+  if (time < 10) {
+    return String(time).padStart(2, '0');
+  }
+
+  return time;
 }
