@@ -1,6 +1,10 @@
 import pictures from './pictures.json' assert { type: 'json' };
-
+import { loadTodos } from './api.js';
 import { load, save } from './storage.js';
+
+loadTodos().then((data) => {
+  content.insertAdjacentHTML('afterbegin', getTodosListMarkup(data));;
+});
 
 const main = document.querySelector('.main');
 const content = document.querySelector('.content');
@@ -39,15 +43,16 @@ function handleSearch(event) {
   }
 }
 
-function getImageListMarkup(pictures) {
-  return pictures.map(getImageMarkup).join('');
+function getTodosListMarkup(todos) {
+  return todos.map(getTodoMarkup).join('');
 }
 
-function getImageMarkup({ thumbnailUrl, title }) {
+function getTodoMarkup({ userId, id, title, completed }) {
+  const isCompleted = completed ? 'is-success' : 'is-danger';
   return `
-  <div>
-   <img class="image" src="${thumbnailUrl}" alt="${title}">
-  </div>`;
+  <div class="notification ${isCompleted}">
+  ${title}
+</div>`;
 }
 
 function removeContent(el) {
