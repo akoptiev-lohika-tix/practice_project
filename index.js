@@ -2,13 +2,64 @@ import pictures from './pictures.json' assert { type: 'json' };
 import { loadTodos } from './api.js';
 import { load, save } from './storage.js';
 
-loadTodos().then((data) => {
-  content.insertAdjacentHTML('afterbegin', getTodosListMarkup(data));;
-});
-
 const main = document.querySelector('.main');
 const content = document.querySelector('.content');
 const lastSearch = document.querySelector('.last-search');
+const pagination = document.querySelector('.pagination-list');
+const paginationPagesCount = 20;
+const paginationLimit = 10;
+let activepage = null;
+
+creatPaginationMurkup(paginationPagesCount);
+
+activepage = pagination.querySelector('.pagination-link');
+
+loadTodos(1, paginationLimit)
+.then((data) => {
+
+  activepage.classList.add('is-current');
+
+  content.insertAdjacentHTML('afterbegin', getTodosListMarkup(data));
+})
+.catch((e) => {
+  console.log(e.message);
+});
+
+pagination.addEventListener('click', handlePagination);
+
+function handlePagination(event) {
+  if (!event.target.classList.contains('pagination-link')) {
+    return;
+  }
+
+  if (activepage) {
+    activepage.classList.remove('is-current');
+  }
+  const page = Number(event.target.dataset.value);
+
+  loadTodos(page, paginationLimit)
+    .then((data) => {
+      content.innerHTML = '';
+      event.target.classList.add('is-current');
+      activepage = event.target;
+      content.insertAdjacentHTML('afterbegin', getTodosListMarkup(data));
+    })
+    .catch((e) => {
+      console.log(e.message);
+    });
+}
+
+function creatPaginationMurkup(count) {
+  const markup = [];
+  for (let i = 1; i <= count; i++) {
+    markup.push(`<li>
+      <a class="pagination-link" data-value="${i}" aria-label="Goto page ${i}">${i}</a>
+    </li>
+`);
+  }
+
+  pagination.insertAdjacentHTML('beforeend', markup.join(''));
+}
 
 const loadFromStorage = load('lastSearch');
 if (loadFromStorage) {
@@ -51,7 +102,7 @@ function getTodoMarkup({ userId, id, title, completed }) {
   const isCompleted = completed ? 'is-success' : 'is-danger';
   return `
   <div class="notification ${isCompleted}">
-  ${title}
+  ${title} ID:${id}
 </div>`;
 }
 
